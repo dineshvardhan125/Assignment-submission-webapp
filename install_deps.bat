@@ -1,0 +1,2 @@
+call npm install lucide-react clsx tailwind-merge tailwindcss-animate next-themes sonner class-variance-authority @tanstack/react-query --legacy-peer-deps
+call npm install @radix-ui/react-tooltip @radix-ui/react-dropdown-menu @radix-ui/react-avatar @radix-ui/react-separator @radix-ui/react-slot @radix-ui/react-label @radix-ui/react-dialog @radix-ui/react-radio-group @radix-ui/react-select --legacy-peer-deps
