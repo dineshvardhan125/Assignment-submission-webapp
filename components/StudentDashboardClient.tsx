@@ -2,9 +2,10 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatsCard } from "@/components/StatsCard";
-import { BookOpen, Clock, CheckSquare, Award } from "lucide-react";
+import { BookOpen, Clock, CheckSquare, Award, Calendar } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { format } from "date-fns";
 
 export function StudentDashboardClient() {
     const { data: stats, isLoading } = useQuery({
@@ -67,20 +68,31 @@ export function StudentDashboardClient() {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            <div className="flex items-center justify-between border-b pb-2">
-                                <div>
-                                    <p className="font-medium">Physics Lab Report</p>
-                                    <p className="text-sm text-muted-foreground">Due: Tomorrow, 11:59 PM</p>
+                            {stats?.upcomingDeadlines && stats.upcomingDeadlines.length > 0 ? (
+                                stats.upcomingDeadlines.map((deadline: any) => (
+                                    <div key={deadline.id} className="flex items-center justify-between border-b pb-2 last:border-0">
+                                        <div>
+                                            <p className="font-medium">{deadline.title}</p>
+                                            <p className="text-sm text-muted-foreground">
+                                                Due: {format(new Date(deadline.dueDate), "MMM d, yyyy, h:mm a")}
+                                            </p>
+                                        </div>
+                                        <div className={`px-2 py-1 rounded text-xs ${deadline.status === 'Submitted'
+                                                ? 'bg-green-500/10 text-green-500'
+                                                : deadline.status === 'Graded'
+                                                    ? 'bg-blue-500/10 text-blue-500'
+                                                    : 'bg-yellow-500/10 text-yellow-500'
+                                            }`}>
+                                            {deadline.status}
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="text-center py-4 text-muted-foreground">
+                                    <Calendar className="mx-auto h-8 w-8 mb-2 opacity-50" />
+                                    <p>No upcoming deadlines</p>
                                 </div>
-                                <div className="bg-yellow-500/10 text-yellow-500 px-2 py-1 rounded text-xs">Pending</div>
-                            </div>
-                            <div className="flex items-center justify-between border-b pb-2">
-                                <div>
-                                    <p className="font-medium">History Essay</p>
-                                    <p className="text-sm text-muted-foreground">Due: Nov 15, 2023</p>
-                                </div>
-                                <div className="bg-green-500/10 text-green-500 px-2 py-1 rounded text-xs">Submitted</div>
-                            </div>
+                            )}
                         </div>
                     </CardContent>
                 </Card>

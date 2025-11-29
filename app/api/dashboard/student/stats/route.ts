@@ -39,11 +39,40 @@ export async function GET() {
             averageGrade = Number((totalMarks / gradedSubmissions.length).toFixed(1));
         }
 
+        // Fetch upcoming deadlines
+        const now = new Date();
+        const upcomingAssignments = await Assignment.find({
+            dueDate: { $gte: now }
+        })
+            .sort({ dueDate: 1 })
+            .limit(5)
+            .lean();
+
+        const upcomingDeadlines = await Promise.all(upcomingAssignments.map(async (assignment) => {
+            const submission = await Submission.findOne({
+                assignment: assignment._id,
+                student: userId
+            });
+
+            let status = 'Pending';
+            if (submission) {
+                status = submission.status === 'graded' ? 'Graded' : 'Submitted';
+            }
+
+            return {
+                id: assignment._id,
+                title: assignment.title,
+                dueDate: assignment.dueDate,
+                status: status
+            };
+        }));
+
         return NextResponse.json({
             totalAssignments,
             pendingAssignments: Math.max(0, pendingAssignments),
             submittedAssignments: mySubmissions,
-            averageGrade: averageGrade > 0 ? `${averageGrade}%` : 'N/A'
+            averageGrade: averageGrade > 0 ? `${averageGrade}%` : 'N/A',
+            upcomingDeadlines
         });
     } catch (error) {
         console.error('Error fetching student stats:', error);

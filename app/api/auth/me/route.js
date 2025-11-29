@@ -28,6 +28,10 @@ export async function GET() {
           name: user.name,
           email: user.email,
           role: user.role,
+          rollNumber: user.rollNumber,
+          branch: user.branch,
+          section: user.section,
+          year: user.year,
         },
       });
     } catch (error) {

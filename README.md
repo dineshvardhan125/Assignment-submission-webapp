@@ -53,7 +53,7 @@ Ensure you have the following installed:
     Create a `.env.local` file in the root directory and add the following variables:
     ```env
     MONGODB_URI=your_mongodb_connection_string
-    JWT_SECRET=your_jwt_secret_key
+    ADMIN_SECRET=secret_key_admin
     ```
 
 4.  **Run the development server**:
