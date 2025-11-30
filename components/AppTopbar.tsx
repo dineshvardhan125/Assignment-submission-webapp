@@ -24,7 +24,11 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+<<<<<<< HEAD
 import { useState } from "react";
+=======
+import { useState, useEffect } from "react";
+>>>>>>> friend/main
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
@@ -32,9 +36,16 @@ import { useTheme } from "next-themes";
 interface AppTopbarProps {
     userName: string;
     userRole: string;
+<<<<<<< HEAD
 }
 
 export function AppTopbar({ userName, userRole }: AppTopbarProps) {
+=======
+    avatar?: string;
+}
+
+export function AppTopbar({ userName, userRole, avatar }: AppTopbarProps) {
+>>>>>>> friend/main
     const { setTheme, theme } = useTheme();
     const router = useRouter();
 
@@ -51,6 +62,33 @@ export function AppTopbar({ userName, userRole }: AppTopbarProps) {
         router.push("/login");
     };
 
+<<<<<<< HEAD
+=======
+    const [notifications, setNotifications] = useState<any[]>([]);
+    const [unreadCount, setUnreadCount] = useState(0);
+
+    const fetchNotifications = async () => {
+        if (userRole !== 'student') return;
+        try {
+            const res = await fetch('/api/notifications');
+            if (res.ok) {
+                const data = await res.json();
+                setNotifications(data);
+                setUnreadCount(data.filter((n: any) => !n.isRead).length);
+            }
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        }
+    };
+
+    // Poll for notifications every minute
+    useEffect(() => {
+        fetchNotifications();
+        const interval = setInterval(fetchNotifications, 60000);
+        return () => clearInterval(interval);
+    }, []);
+
+>>>>>>> friend/main
     return (
         <header className="h-16 border-b border-border bg-card/40 backdrop-blur-xl flex items-center justify-between px-6">
             <div className="flex items-center gap-4">
@@ -74,16 +112,84 @@ export function AppTopbar({ userName, userRole }: AppTopbarProps) {
                     {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                 </Button>
 
+<<<<<<< HEAD
                 <Button variant="ghost" size="icon" className="hover-glow relative">
                     <Bell className="w-5 h-5" />
                     <span className="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full"></span>
                 </Button>
+=======
+                {userRole === 'student' && (
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="hover-glow relative" onClick={fetchNotifications}>
+                                <Bell className="w-5 h-5" />
+                                {unreadCount > 0 && (
+                                    <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full animate-pulse"></span>
+                                )}
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-80 max-h-96 overflow-y-auto">
+                            <DropdownMenuLabel className="flex justify-between items-center">
+                                <span>Notifications</span>
+                                {unreadCount > 0 && (
+                                    <span
+                                        className="text-xs text-primary cursor-pointer hover:underline"
+                                        onClick={async (e) => {
+                                            e.preventDefault();
+                                            await fetch('/api/notifications', {
+                                                method: 'PATCH',
+                                                body: JSON.stringify({ id: 'all' }),
+                                            });
+                                            fetchNotifications();
+                                        }}
+                                    >
+                                        Mark all read
+                                    </span>
+                                )}
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            {notifications.length === 0 ? (
+                                <div className="p-4 text-center text-sm text-muted-foreground">
+                                    No notifications
+                                </div>
+                            ) : (
+                                notifications.map((notification) => (
+                                    <DropdownMenuItem
+                                        key={notification._id}
+                                        className={`flex flex-col items-start gap-1 p-3 cursor-pointer ${!notification.isRead ? 'bg-secondary/50' : ''}`}
+                                        onClick={async () => {
+                                            if (!notification.isRead) {
+                                                await fetch('/api/notifications', {
+                                                    method: 'PATCH',
+                                                    body: JSON.stringify({ id: notification._id }),
+                                                });
+                                                fetchNotifications();
+                                            }
+                                        }}
+                                    >
+                                        <p className={`text-sm ${!notification.isRead ? 'font-semibold' : ''}`}>
+                                            {notification.message}
+                                        </p>
+                                        <p className="text-xs text-muted-foreground">
+                                            {new Date(notification.createdAt).toLocaleDateString()}
+                                        </p>
+                                    </DropdownMenuItem>
+                                ))
+                            )}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                )}
+>>>>>>> friend/main
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="flex items-center gap-3 pl-4 border-l border-border hover-glow">
                             <Avatar className="w-9 h-9 border-2 border-primary/20">
+<<<<<<< HEAD
                                 <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userName}`} />
+=======
+                                <AvatarImage src={`https://api.dicebear.com/7.x/${avatar || 'adventurer-neutral'}/svg?seed=${userName}`} />
+>>>>>>> friend/main
                                 <AvatarFallback>{userName.slice(0, 2).toUpperCase()}</AvatarFallback>
                             </Avatar>
                             <div className="text-left">

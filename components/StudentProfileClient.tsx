@@ -1,15 +1,28 @@
 "use client";
 
+<<<<<<< HEAD
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { User, Mail, Hash, BookOpen, Layers, Calendar } from "lucide-react";
+=======
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { User, Mail, Hash, BookOpen, Layers, Calendar } from "lucide-react";
+import { AvatarSelection } from "@/components/AvatarSelection";
+>>>>>>> friend/main
 
 export function StudentProfileClient() {
     const { data: userData, isLoading } = useQuery({
         queryKey: ["userProfile"],
         queryFn: async () => {
+<<<<<<< HEAD
             const res = await fetch("/api/auth/me");
+=======
+            const res = await fetch("/api/auth/me", { cache: 'no-store' });
+>>>>>>> friend/main
             if (!res.ok) throw new Error("Failed to fetch profile");
             return res.json();
         },
@@ -17,6 +30,17 @@ export function StudentProfileClient() {
 
     const user = userData?.user;
 
+<<<<<<< HEAD
+=======
+    const router = useRouter();
+    const queryClient = useQueryClient();
+
+    const handleAvatarUpdate = () => {
+        queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+        router.refresh();
+    };
+
+>>>>>>> friend/main
     if (isLoading) {
         return (
             <div className="p-6 space-y-6">
@@ -58,6 +82,16 @@ export function StudentProfileClient() {
                         <CardTitle>Personal Information</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
+<<<<<<< HEAD
+=======
+                        <div className="flex justify-center mb-6">
+                            <AvatarSelection
+                                currentAvatar={user.avatar || 'adventurer-neutral'}
+                                userName={user.name}
+                                onAvatarUpdate={handleAvatarUpdate}
+                            />
+                        </div>
+>>>>>>> friend/main
                         <div className="flex items-center space-x-4 p-3 rounded-lg bg-muted/50">
                             <div className="bg-primary/10 p-2 rounded-full">
                                 <User className="h-5 w-5 text-primary" />

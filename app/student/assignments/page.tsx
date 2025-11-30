@@ -13,7 +13,11 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+<<<<<<< HEAD
 import { Calendar, FileText, CheckCircle, Clock } from "lucide-react";
+=======
+import { Calendar, FileText, CheckCircle, Clock, Award } from "lucide-react";
+>>>>>>> friend/main
 import { format } from "date-fns";
 
 export default async function StudentAssignmentsPage() {
@@ -24,7 +28,16 @@ export default async function StudentAssignmentsPage() {
         return <div>Please log in to view assignments.</div>;
     }
 
+<<<<<<< HEAD
     const assignments = await Assignment.find({}).sort({ createdAt: -1 }).lean();
+=======
+    const query: any = {};
+    if (user.year) {
+        query.year = user.year;
+    }
+
+    const assignments = await Assignment.find(query).sort({ createdAt: -1 }).lean();
+>>>>>>> friend/main
     const submissions = await Submission.find({ student: user.id }).lean();
 
     const assignmentsWithStatus = assignments.map((assignment) => {
@@ -49,12 +62,25 @@ export default async function StudentAssignmentsPage() {
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {assignmentsWithStatus.length === 0 ? (
+<<<<<<< HEAD
                     <div className="col-span-full text-center py-12 text-muted-foreground">
                         No assignments available at the moment.
                     </div>
                 ) : (
                     assignmentsWithStatus.map((assignment) => (
                         <Card key={assignment._id.toString()} className="flex flex-col">
+=======
+                    <div className="col-span-full text-center py-12 text-muted-foreground animate-float">
+                        No assignments available at the moment.
+                    </div>
+                ) : (
+                    assignmentsWithStatus.map((assignment, index) => (
+                        <Card
+                            key={assignment._id.toString()}
+                            className="flex flex-col hover:scale-[1.02] transition-all duration-300 animate-fade-in-up"
+                            style={{ animationDelay: `${index * 100}ms` }}
+                        >
+>>>>>>> friend/main
                             <CardHeader>
                                 <div className="flex justify-between items-start">
                                     <Badge variant="outline" className="mb-2">
@@ -81,11 +107,22 @@ export default async function StudentAssignmentsPage() {
                                         <FileText className="h-4 w-4" />
                                         <span>Year: {assignment.year || 'All'}</span>
                                     </div>
+<<<<<<< HEAD
+=======
+                                    <div className="flex items-center gap-2">
+                                        <Award className="h-4 w-4" />
+                                        <span>Total Marks: {assignment.totalMarks || 100}</span>
+                                    </div>
+>>>>>>> friend/main
                                 </div>
                             </CardContent>
                             <CardFooter>
                                 <Link href={`/student/assignments/${assignment._id}`} className="w-full">
+<<<<<<< HEAD
                                     <Button className="w-full" variant={assignment.status === 'pending' ? "default" : "outline"}>
+=======
+                                    <Button className="w-full animate-pulse-glow" variant={assignment.status === 'pending' ? "default" : "outline"}>
+>>>>>>> friend/main
                                         {assignment.status === 'pending' ? (
                                             <>
                                                 <Clock className="mr-2 h-4 w-4" />

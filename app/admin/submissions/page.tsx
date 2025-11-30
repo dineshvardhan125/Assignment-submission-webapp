@@ -1,12 +1,10 @@
 import connectDB from '@/lib/db';
-import Assignment from '@/models/Assignment';
 import Submission from '@/models/Submission';
-<<<<<<< HEAD
-import GradeForm from './GradeForm';
-=======
+import Assignment from '@/models/Assignment';
+import User from '@/models/User';
 import GradeForm from '@/components/GradeForm';
->>>>>>> friend/main
-import { notFound } from 'next/navigation';
+import SubmissionsFilter from './SubmissionsFilter';
+import HighlightText from '@/components/HighlightText';
 import {
     Card,
     CardContent,
@@ -23,22 +21,49 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { FileText, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
 
-export default async function AdminSubmissionsPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+export default async function AllSubmissionsPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
     await connectDB();
 
-    const assignment = await Assignment.findById(id).lean();
+    const params = await searchParams;
+    const search = typeof params.search === 'string' ? params.search : '';
+    const subject = typeof params.subject === 'string' ? params.subject : '';
 
-    if (!assignment) {
-        notFound();
+    let query: any = {};
+
+    // Filter by subject
+    if (subject) {
+        const assignments = await Assignment.find({ subject: { $regex: subject, $options: 'i' } });
+        const assignmentIds = assignments.map(a => a._id);
+        query.assignment = { $in: assignmentIds };
     }
 
-    const submissions = await Submission.find({ assignment: id })
-        .populate('student', 'name email')
+    // Filter by student (name, roll, year)
+    if (search) {
+        const studentQuery = {
+            $or: [
+                { name: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } },
+                { rollNumber: { $regex: search, $options: 'i' } },
+                { year: { $regex: search, $options: 'i' } }
+            ]
+        };
+        const students = await User.find(studentQuery);
+        const studentIds = students.map(s => s._id);
+
+        // If we already have a query (from subject), we need to use $and
+        if (query.assignment) {
+            query.student = { $in: studentIds };
+        } else {
+            query.student = { $in: studentIds };
+        }
+    }
+
+    const submissions = await Submission.find(query)
+        .populate('student', 'name email rollNumber year')
+        .populate('assignment', 'title subject')
         .sort({ createdAt: -1 })
         .lean();
 
@@ -46,42 +71,49 @@ export default async function AdminSubmissionsPage({ params }: { params: Promise
     const serializedSubmissions = submissions.map(sub => ({
         ...sub,
         _id: sub._id.toString(),
-        assignment: sub.assignment.toString(),
-        student: {
+        // @ts-ignore
+        assignment: sub.assignment ? { ...sub.assignment, _id: sub.assignment._id.toString() } : null,
+        student: sub.student ? {
             // @ts-ignore
             ...sub.student,
             // @ts-ignore
             _id: sub.student._id.toString(),
-        },
+        } : null,
         createdAt: sub.createdAt.toISOString(),
         updatedAt: sub.updatedAt.toISOString(),
     }));
 
     return (
         <div className="space-y-6">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight">Submissions</h1>
-                <p className="text-muted-foreground">
-                    Viewing submissions for: <span className="font-semibold text-foreground">{assignment.title}</span>
-<<<<<<< HEAD
-=======
-                    <span className="ml-2 text-sm bg-secondary px-2 py-1 rounded-md">Total Marks: {assignment.totalMarks || 100}</span>
->>>>>>> friend/main
-                </p>
+            <div className="flex justify-between items-end">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">All Submissions</h1>
+                    <p className="text-muted-foreground">
+                        View and manage student submissions across all subjects.
+                    </p>
+                </div>
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Student Submissions</CardTitle>
-                    <CardDescription>
-                        Total Submissions: {submissions.length}
-                    </CardDescription>
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <CardTitle>Submissions</CardTitle>
+                            <CardDescription>
+                                Total Submissions: {submissions.length}
+                            </CardDescription>
+                        </div>
+                        <SubmissionsFilter />
+                    </div>
                 </CardHeader>
                 <CardContent>
                     <Table>
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Student</TableHead>
+                                <TableHead>Year</TableHead>
+                                <TableHead>Subject</TableHead>
+                                <TableHead>Assignment</TableHead>
                                 <TableHead>File</TableHead>
                                 <TableHead>Submitted On</TableHead>
                                 <TableHead>Status</TableHead>
@@ -92,8 +124,8 @@ export default async function AdminSubmissionsPage({ params }: { params: Promise
                         <TableBody>
                             {serializedSubmissions.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={6} className="h-24 text-center">
-                                        No submissions yet.
+                                    <TableCell colSpan={9} className="h-24 text-center">
+                                        No submissions found.
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -101,9 +133,24 @@ export default async function AdminSubmissionsPage({ params }: { params: Promise
                                     <TableRow key={submission._id}>
                                         <TableCell>
                                             <div className="flex flex-col">
-                                                <span className="font-medium">{submission.student?.name}</span>
-                                                <span className="text-xs text-muted-foreground">{submission.student?.email}</span>
+                                                <span className="font-medium">
+                                                    <HighlightText text={submission.student?.name || 'Unknown'} highlight={search} />
+                                                </span>
+                                                <span className="text-xs text-muted-foreground">
+                                                    <HighlightText text={submission.student?.rollNumber || submission.student?.email || ''} highlight={search} />
+                                                </span>
                                             </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <HighlightText text={submission.student?.year || 'N/A'} highlight={search} />
+                                        </TableCell>
+                                        <TableCell>
+                                            <Badge variant="outline">
+                                                <HighlightText text={submission.assignment?.subject || 'N/A'} highlight={subject || search} />
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className="text-sm font-medium">{submission.assignment?.title || 'Unknown Assignment'}</span>
                                         </TableCell>
                                         <TableCell>
                                             <a
@@ -113,11 +160,11 @@ export default async function AdminSubmissionsPage({ params }: { params: Promise
                                                 className="inline-flex items-center gap-1 text-blue-600 hover:underline"
                                             >
                                                 <FileText className="h-4 w-4" />
-                                                View File <ExternalLink className="h-3 w-3" />
+                                                View
                                             </a>
                                         </TableCell>
                                         <TableCell>
-                                            {format(new Date(submission.createdAt), "PP p")}
+                                            {format(new Date(submission.createdAt), "MMM d, p")}
                                         </TableCell>
                                         <TableCell>
                                             <Badge
@@ -135,11 +182,7 @@ export default async function AdminSubmissionsPage({ params }: { params: Promise
                                             )}
                                         </TableCell>
                                         <TableCell className="text-right">
-<<<<<<< HEAD
                                             <GradeForm submission={submission} />
-=======
-                                            <GradeForm submission={submission} totalMarks={assignment.totalMarks || 100} />
->>>>>>> friend/main
                                         </TableCell>
                                     </TableRow>
                                 ))

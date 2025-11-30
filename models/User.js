@@ -31,6 +31,13 @@ const UserSchema = new mongoose.Schema({
   year: {
     type: String,
   },
+<<<<<<< HEAD
+=======
+  avatar: {
+    type: String,
+    default: 'adventurer-neutral', // Default avatar style
+  },
+>>>>>>> friend/main
 }, { timestamps: true });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);

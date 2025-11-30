@@ -8,6 +8,55 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+<<<<<<< HEAD
+=======
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 250 95% 65%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 263 85% 60%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 250 95% 65%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --neon-blue: 220 100% 60%;
+    --neon-purple: 263 85% 60%;
+    --glass-bg: 0 0% 100%;
+    --glass-border: 214.3 31.8% 91.4%;
+  }
+
+  .dark {
+>>>>>>> friend/main
     --background: 222 47% 4%;
     --foreground: 210 40% 98%;
 
@@ -36,8 +85,11 @@ All colors MUST be HSL.
     --input: 217 33% 12%;
     --ring: 250 95% 65%;
 
+<<<<<<< HEAD
     --radius: 0.75rem;
 
+=======
+>>>>>>> friend/main
     --sidebar-background: 222 47% 3%;
     --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 250 95% 65%;
