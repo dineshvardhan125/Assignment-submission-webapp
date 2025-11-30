@@ -26,15 +26,12 @@ export async function getCurrentUser() {
                 name: user.name,
                 email: user.email,
                 role: user.role,
-<<<<<<< HEAD
-=======
                 createdAt: user.createdAt,
                 avatar: user.avatar,
                 year: user.year,
                 branch: user.branch,
                 section: user.section,
                 rollNumber: user.rollNumber,
->>>>>>> friend/main
             };
         } catch (error) {
             return null;

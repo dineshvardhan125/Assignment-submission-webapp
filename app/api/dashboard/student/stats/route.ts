@@ -2,10 +2,7 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Assignment from '@/models/Assignment';
 import Submission from '@/models/Submission';
-<<<<<<< HEAD
-=======
 import User from '@/models/User';
->>>>>>> friend/main
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 
@@ -28,10 +25,6 @@ export async function GET() {
         }
 
         const userId = decoded.id;
-<<<<<<< HEAD
-
-        const totalAssignments = await Assignment.countDocuments({});
-=======
         const user = await User.findById(userId);
         const userYear = user?.year;
 
@@ -41,7 +34,6 @@ export async function GET() {
         }
 
         const totalAssignments = await Assignment.countDocuments(assignmentQuery);
->>>>>>> friend/main
         const mySubmissions = await Submission.countDocuments({ student: userId });
         const pendingAssignments = totalAssignments - mySubmissions; // Simplified logic
         // For a real app, you'd check which specific assignments are submitted. 
@@ -58,12 +50,8 @@ export async function GET() {
         // Fetch upcoming deadlines
         const now = new Date();
         const upcomingAssignments = await Assignment.find({
-<<<<<<< HEAD
-            dueDate: { $gte: now }
-=======
             dueDate: { $gte: now },
             ...assignmentQuery
->>>>>>> friend/main
         })
             .sort({ dueDate: 1 })
             .limit(5)

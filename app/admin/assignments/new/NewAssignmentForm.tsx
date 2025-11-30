@@ -33,10 +33,7 @@ export default function NewAssignmentForm() {
         subject: "",
         year: "",
         dueDate: "",
-<<<<<<< HEAD
-=======
         totalMarks: "100",
->>>>>>> friend/main
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -50,15 +47,13 @@ export default function NewAssignmentForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-<<<<<<< HEAD
-=======
 
         if (!formData.year) {
             toast.error("Please select a year");
             return;
         }
 
->>>>>>> friend/main
+
         setLoading(true);
 
         try {
@@ -107,11 +102,7 @@ export default function NewAssignmentForm() {
                         />
                     </div>
 
-<<<<<<< HEAD
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-=======
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
->>>>>>> friend/main
                         <div className="space-y-2">
                             <Label htmlFor="subject">Subject</Label>
                             <Input
@@ -133,15 +124,6 @@ export default function NewAssignmentForm() {
                                     <SelectValue placeholder="Select Year" />
                                 </SelectTrigger>
                                 <SelectContent>
-<<<<<<< HEAD
-                                    <SelectItem value="1st Year">1st Year</SelectItem>
-                                    <SelectItem value="2nd Year">2nd Year</SelectItem>
-                                    <SelectItem value="3rd Year">3rd Year</SelectItem>
-                                    <SelectItem value="4th Year">4th Year</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-=======
                                     <SelectItem value="1">1st Year</SelectItem>
                                     <SelectItem value="2">2nd Year</SelectItem>
                                     <SelectItem value="3">3rd Year</SelectItem>
@@ -162,7 +144,6 @@ export default function NewAssignmentForm() {
                                 required
                             />
                         </div>
->>>>>>> friend/main
                     </div>
 
                     <div className="space-y-2">

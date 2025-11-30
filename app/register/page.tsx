@@ -28,10 +28,7 @@ export default function RegisterPage() {
         section: '',
         year: '',
         adminSecret: '',
-<<<<<<< HEAD
-=======
 
->>>>>>> friend/main
     });
     const [role, setRole] = useState<"student" | "admin">("student");
     const [loading, setLoading] = useState(false);
@@ -158,11 +155,7 @@ export default function RegisterPage() {
                         />
                     </div>
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> friend/main
                     <div className="space-y-3">
                         <Label>Select Role</Label>
                         <RadioGroup value={role} onValueChange={(value) => setRole(value as "student" | "admin")}>

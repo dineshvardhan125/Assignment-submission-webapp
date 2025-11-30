@@ -12,11 +12,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
             <div className="flex min-h-screen w-full">
                 <AppSidebar role="student" />
                 <div className="flex-1 flex flex-col">
-<<<<<<< HEAD
-                    <AppTopbar userName={user?.name || "Student User"} userRole="student" />
-=======
                     <AppTopbar userName={user?.name || "Student User"} userRole="student" avatar={user?.avatar} />
->>>>>>> friend/main
                     <main className="flex-1 p-8 bg-gradient-to-br from-background via-background to-accent/5">
                         {children}
                     </main>

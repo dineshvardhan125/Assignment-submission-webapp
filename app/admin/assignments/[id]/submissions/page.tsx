@@ -1,11 +1,7 @@
 import connectDB from '@/lib/db';
 import Assignment from '@/models/Assignment';
 import Submission from '@/models/Submission';
-<<<<<<< HEAD
-import GradeForm from './GradeForm';
-=======
 import GradeForm from '@/components/GradeForm';
->>>>>>> friend/main
 import { notFound } from 'next/navigation';
 import {
     Card,
@@ -63,10 +59,7 @@ export default async function AdminSubmissionsPage({ params }: { params: Promise
                 <h1 className="text-3xl font-bold tracking-tight">Submissions</h1>
                 <p className="text-muted-foreground">
                     Viewing submissions for: <span className="font-semibold text-foreground">{assignment.title}</span>
-<<<<<<< HEAD
-=======
                     <span className="ml-2 text-sm bg-secondary px-2 py-1 rounded-md">Total Marks: {assignment.totalMarks || 100}</span>
->>>>>>> friend/main
                 </p>
             </div>
 
@@ -135,11 +128,7 @@ export default async function AdminSubmissionsPage({ params }: { params: Promise
                                             )}
                                         </TableCell>
                                         <TableCell className="text-right">
-<<<<<<< HEAD
-                                            <GradeForm submission={submission} />
-=======
                                             <GradeForm submission={submission} totalMarks={assignment.totalMarks || 100} />
->>>>>>> friend/main
                                         </TableCell>
                                     </TableRow>
                                 ))

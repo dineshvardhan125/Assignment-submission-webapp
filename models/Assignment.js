@@ -23,14 +23,11 @@ const AssignmentSchema = new mongoose.Schema({
   year: {
     type: String,
   },
-<<<<<<< HEAD
-=======
   totalMarks: {
     type: Number,
     required: true,
     default: 100,
   },
->>>>>>> friend/main
 }, { timestamps: true });
 
 export default mongoose.models.Assignment || mongoose.model('Assignment', AssignmentSchema);

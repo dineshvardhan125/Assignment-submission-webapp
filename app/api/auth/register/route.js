@@ -10,11 +10,7 @@ export async function POST(req) {
 
     const body = await req.json();
     console.log('Registration Request Body:', body);
-<<<<<<< HEAD
-    const { name, email, password, role, adminSecret, rollNumber, branch, section, year } = body;
-=======
     const { name, email, password, role, adminSecret, rollNumber, branch, section, year, avatar } = body;
->>>>>>> friend/main
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -69,10 +65,7 @@ export async function POST(req) {
       branch: role !== 'admin' ? branch : undefined,
       section: role !== 'admin' ? section : undefined,
       year: role !== 'admin' ? year : undefined,
-<<<<<<< HEAD
-=======
       avatar: avatar || 'adventurer-neutral',
->>>>>>> friend/main
     });
 
     console.log('Creating User:', newUser);
@@ -95,10 +88,7 @@ export async function POST(req) {
           branch: newUser.branch,
           section: newUser.section,
           year: newUser.year,
-<<<<<<< HEAD
-=======
           avatar: newUser.avatar,
->>>>>>> friend/main
         },
       },
       { status: 201 }

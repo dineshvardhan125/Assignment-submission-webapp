@@ -4,11 +4,9 @@ import { cookies } from 'next/headers';
 import connectDB from '@/lib/db';
 import User from '@/models/User';
 
-<<<<<<< HEAD
-=======
 export const dynamic = 'force-dynamic';
 
->>>>>>> friend/main
+
 export async function GET() {
   try {
     await connectDB();
@@ -22,11 +20,7 @@ export async function GET() {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await User.findById(decoded.id).select('-passwordHash');
-<<<<<<< HEAD
-      
-=======
 
->>>>>>> friend/main
       if (!user) {
         return NextResponse.json({ user: null });
       }
@@ -40,13 +34,8 @@ export async function GET() {
           rollNumber: user.rollNumber,
           branch: user.branch,
           section: user.section,
-<<<<<<< HEAD
-          year: user.year,
-=======
-          section: user.section,
           year: user.year,
           avatar: user.avatar,
->>>>>>> friend/main
         },
       });
     } catch (error) {

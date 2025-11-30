@@ -20,11 +20,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <div className="flex min-h-screen w-full">
                 <AppSidebar role="admin" />
                 <div className="flex-1 flex flex-col">
-<<<<<<< HEAD
-                    <AppTopbar userName={user?.name || "Admin User"} userRole="admin" />
-=======
                     <AppTopbar userName={user?.name || "Admin User"} userRole="admin" avatar={user?.avatar} />
->>>>>>> friend/main
                     <main className="flex-1 p-8 bg-gradient-to-br from-background via-background to-primary/5">
                         {children}
                     </main>

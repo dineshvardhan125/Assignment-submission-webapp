@@ -24,11 +24,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-<<<<<<< HEAD
-import { useState } from "react";
-=======
 import { useState, useEffect } from "react";
->>>>>>> friend/main
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
@@ -36,16 +32,10 @@ import { useTheme } from "next-themes";
 interface AppTopbarProps {
     userName: string;
     userRole: string;
-<<<<<<< HEAD
-}
-
-export function AppTopbar({ userName, userRole }: AppTopbarProps) {
-=======
     avatar?: string;
 }
 
 export function AppTopbar({ userName, userRole, avatar }: AppTopbarProps) {
->>>>>>> friend/main
     const { setTheme, theme } = useTheme();
     const router = useRouter();
 
@@ -62,8 +52,6 @@ export function AppTopbar({ userName, userRole, avatar }: AppTopbarProps) {
         router.push("/login");
     };
 
-<<<<<<< HEAD
-=======
     const [notifications, setNotifications] = useState<any[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
 
@@ -87,8 +75,6 @@ export function AppTopbar({ userName, userRole, avatar }: AppTopbarProps) {
         const interval = setInterval(fetchNotifications, 60000);
         return () => clearInterval(interval);
     }, []);
-
->>>>>>> friend/main
     return (
         <header className="h-16 border-b border-border bg-card/40 backdrop-blur-xl flex items-center justify-between px-6">
             <div className="flex items-center gap-4">
@@ -112,12 +98,6 @@ export function AppTopbar({ userName, userRole, avatar }: AppTopbarProps) {
                     {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                 </Button>
 
-<<<<<<< HEAD
-                <Button variant="ghost" size="icon" className="hover-glow relative">
-                    <Bell className="w-5 h-5" />
-                    <span className="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full"></span>
-                </Button>
-=======
                 {userRole === 'student' && (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -179,17 +159,12 @@ export function AppTopbar({ userName, userRole, avatar }: AppTopbarProps) {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 )}
->>>>>>> friend/main
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="flex items-center gap-3 pl-4 border-l border-border hover-glow">
                             <Avatar className="w-9 h-9 border-2 border-primary/20">
-<<<<<<< HEAD
-                                <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userName}`} />
-=======
                                 <AvatarImage src={`https://api.dicebear.com/7.x/${avatar || 'adventurer-neutral'}/svg?seed=${userName}`} />
->>>>>>> friend/main
                                 <AvatarFallback>{userName.slice(0, 2).toUpperCase()}</AvatarFallback>
                             </Avatar>
                             <div className="text-left">

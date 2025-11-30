@@ -1,20 +1,14 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Assignment from '@/models/Assignment';
-<<<<<<< HEAD
-=======
 import Notification from '@/models/Notification';
 import User from '@/models/User';
->>>>>>> friend/main
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
 export async function GET() {
   try {
     await connectDB();
-<<<<<<< HEAD
-    const assignments = await Assignment.find({}).sort({ createdAt: -1 });
-=======
 
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
@@ -39,7 +33,6 @@ export async function GET() {
     }
 
     const assignments = await Assignment.find(query).sort({ createdAt: -1 });
->>>>>>> friend/main
     return NextResponse.json(assignments);
   } catch (error) {
     console.error('Error fetching assignments:', error);
@@ -81,11 +74,7 @@ export async function POST(req) {
       );
     }
 
-<<<<<<< HEAD
-    const { title, description, dueDate, subject, year } = await req.json();
-=======
     const { title, description, dueDate, subject, year, totalMarks } = await req.json();
->>>>>>> friend/main
 
     if (!title || !dueDate) {
       return NextResponse.json(
@@ -100,17 +89,12 @@ export async function POST(req) {
       dueDate,
       subject,
       year,
-<<<<<<< HEAD
-=======
       totalMarks: parseInt(totalMarks) || 100,
->>>>>>> friend/main
       createdBy: decoded.id,
     });
 
     await newAssignment.save();
 
-<<<<<<< HEAD
-=======
     // Create notifications for students
     const query = { role: 'student' };
     if (year) {
@@ -130,7 +114,7 @@ export async function POST(req) {
       await Notification.insertMany(notifications);
     }
 
->>>>>>> friend/main
+
     return NextResponse.json(newAssignment, { status: 201 });
   } catch (error) {
     console.error('Error creating assignment:', error);

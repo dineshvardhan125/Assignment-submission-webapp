@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Submission from '@/models/Submission';
-<<<<<<< HEAD
-=======
 import Assignment from '@/models/Assignment';
->>>>>>> friend/main
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
@@ -48,11 +45,7 @@ export async function POST(req) {
       );
     }
 
-<<<<<<< HEAD
-    const submission = await Submission.findById(submissionId);
-=======
     const submission = await Submission.findById(submissionId).populate('assignment');
->>>>>>> friend/main
 
     if (!submission) {
       return NextResponse.json(
@@ -61,8 +54,6 @@ export async function POST(req) {
       );
     }
 
-<<<<<<< HEAD
-=======
     const totalMarks = submission.assignment.totalMarks || 100;
     if (marks > totalMarks) {
       return NextResponse.json(
@@ -71,7 +62,7 @@ export async function POST(req) {
       );
     }
 
->>>>>>> friend/main
+
     submission.marks = marks;
     submission.feedback = feedback;
     submission.status = 'graded';

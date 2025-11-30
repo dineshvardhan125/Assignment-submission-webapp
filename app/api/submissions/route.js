@@ -1,11 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Submission from '@/models/Submission';
-<<<<<<< HEAD
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
-
-=======
 import Assignment from '@/models/Assignment';
 import User from '@/models/User';
 import jwt from 'jsonwebtoken';
@@ -72,8 +67,6 @@ export async function GET(req) {
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
-
->>>>>>> friend/main
 export async function POST(req) {
   try {
     await connectDB();

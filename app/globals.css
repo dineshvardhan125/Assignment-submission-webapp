@@ -8,8 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-<<<<<<< HEAD
-=======
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -56,7 +55,7 @@ All colors MUST be HSL.
   }
 
   .dark {
->>>>>>> friend/main
+
     --background: 222 47% 4%;
     --foreground: 210 40% 98%;
 
@@ -85,11 +84,7 @@ All colors MUST be HSL.
     --input: 217 33% 12%;
     --ring: 250 95% 65%;
 
-<<<<<<< HEAD
-    --radius: 0.75rem;
 
-=======
->>>>>>> friend/main
     --sidebar-background: 222 47% 3%;
     --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 250 95% 65%;
