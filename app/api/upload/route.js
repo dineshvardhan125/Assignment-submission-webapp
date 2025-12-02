@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
-import path from 'path';
-import { mkdir } from 'fs/promises';
+import mongoose from 'mongoose';
+import connectDB from '@/lib/db';
 
 export async function POST(req) {
   try {
@@ -15,21 +14,28 @@ export async function POST(req) {
       );
     }
 
+    await connectDB();
+    const db = mongoose.connection.db;
+    const bucket = new mongoose.mongo.GridFSBucket(db, {
+      bucketName: 'uploads'
+    });
+
     const buffer = Buffer.from(await file.arrayBuffer());
     const filename = Date.now() + '-' + file.name.replaceAll(' ', '_');
     
-    // Ensure uploads directory exists
-    const uploadDir = path.join(process.cwd(), 'public/uploads');
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch (e) {
-      // Ignore if exists
-    }
+    const uploadStream = bucket.openUploadStream(filename, {
+      contentType: file.type,
+    });
 
-    const filepath = path.join(uploadDir, filename);
-    await writeFile(filepath, buffer);
+    const uploadPromise = new Promise((resolve, reject) => {
+      uploadStream.on('finish', resolve);
+      uploadStream.on('error', reject);
+    });
 
-    const fileUrl = `/uploads/${filename}`;
+    uploadStream.end(buffer);
+    await uploadPromise;
+
+    const fileUrl = `/api/files/${uploadStream.id}`;
 
     return NextResponse.json({ fileUrl }, { status: 201 });
   } catch (error) {
